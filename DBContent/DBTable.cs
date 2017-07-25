@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-
+using System.Linq; 
 namespace DBContent
 {
     public class DBTable
     {
+        /// <summary>
+        /// 获得桌号列表
+        /// </summary>
+        /// <returns></returns>
         public List<Entity.table> GetTableList()
         {
             var db = new Entity.zmdbEntities1();
@@ -14,6 +17,12 @@ namespace DBContent
                      select u;
             return li.ToList();
         }
+        /// <summary>
+        /// 坐下
+        /// </summary>
+        /// <param name="userid">用户ID</param>
+        /// <param name="tableid">桌号</param>
+        /// <returns></returns>
         public int SetInTable(int userid, int tableid)
         {
             var db = new Entity.zmdbEntities1();
@@ -27,6 +36,11 @@ namespace DBContent
             db.SaveChanges();
             return tableid;
         }
+        /// <summary>
+        /// 开始游戏
+        /// </summary>
+        /// <param name="tableid">桌号</param>
+        /// <returns></returns>
         public int StartGame(int tableid)
         {
             var db = new Entity.zmdbEntities1();
@@ -44,6 +58,12 @@ namespace DBContent
             db = new Entity.zmdbEntities1();
             return db.table.First(ex => ex.tableid == tableid).game.First().gameid;
         }
+        /// <summary>
+        /// 向桌子上发补充包
+        /// </summary>
+        /// <param name="tableid">桌ID</param>
+        /// <param name="setids">四包分别是什么蛋</param>
+        /// <returns></returns>
         public int AddCardPackageGame(int tableid, List<int> setids)
         {
             var db = new Entity.zmdbEntities1();
@@ -89,7 +109,12 @@ namespace DBContent
             });
             return db.table.First(ex => ex.tableid == tableid).game.First().gameid;
         }
-
+        /// <summary>
+        /// 选卡
+        /// </summary>
+        /// <param name="userid">用户ID</param>
+        /// <param name="pickedcardid">选择的卡ID</param>
+        /// <returns></returns>
         public int PickedCard(int userid, int pickedcardid)
         {
             var db = new Entity.zmdbEntities1();
@@ -108,6 +133,10 @@ namespace DBContent
             db.SaveChanges();
             return ss.cardid;
         }
+        /// <summary>
+        /// 刷新当前牌桌所开第几包（请在开第二第三第四包之前调用）
+        /// </summary>
+        /// <param name="tableid">桌号</param>
         public void SetNow(int tableid)
         {
             var db = new Entity.zmdbEntities1();
@@ -132,6 +161,12 @@ namespace DBContent
             }
             db.SaveChanges();
         }
+        /// <summary>
+        /// 传牌
+        /// </summary>
+        /// <param name="tableid">桌号</param>
+        /// <param name="IsRight">是否右传</param>
+        /// <returns>桌号</returns>
         public int ChangeCard(int tableid, bool IsRight)
         {
             var db = new Entity.zmdbEntities1();
@@ -161,6 +196,11 @@ namespace DBContent
             db.SaveChanges();
             return tableid;
         }
+        /// <summary>
+        /// 获得我正在选的扩展包信息
+        /// </summary>
+        /// <param name="userid">用户ID</param>
+        /// <returns></returns>
         public List<Entity.packagecard> GetMyList(int userid)
         {
             var db = new Entity.zmdbEntities1();
@@ -168,6 +208,12 @@ namespace DBContent
             var gamepackage = db.packagecard.Where(e => e.gamepackageid == package.gamepackageid && e.pickituserid == null).ToList();
             return gamepackage;
         }
+        /// <summary>
+        /// 获得我的已经扣下的卡表
+        /// </summary>
+        /// <param name="gameid">游戏ID</param>
+        /// <param name="userid">用户ID</param>
+        /// <returns></returns>
         public List<Entity.cards> GetMyCardList(int gameid, int userid)
         {
             var db = new Entity.zmdbEntities1();
