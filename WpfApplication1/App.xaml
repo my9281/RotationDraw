@@ -1,0 +1,19 @@
+﻿<Application x:Class="WpfApplication1.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ImageSource x:Key="Image0">Image/0.jpg</ImageSource>
+        <ImageSource x:Key="Image1">Image/1.jpg</ImageSource>
+        <ImageSource x:Key="Image2">Image/2.jpg</ImageSource>
+        <ImageSource x:Key="Image3">Image/3.jpg</ImageSource>
+        <ImageSource x:Key="Image4">Image/4.jpg</ImageSource>
+        <ImageSource x:Key="Image5">Image/5.jpg</ImageSource>
+        <ImageSource x:Key="Image6">Image/6.jpg</ImageSource>
+        <ImageSource x:Key="Image7">Image/7.jpg</ImageSource>
+        <ImageSource x:Key="Image8">Image/8.jpg</ImageSource>
+        <ImageSource x:Key="Image9">Image/9.jpg</ImageSource>
+        <ImageSource x:Key="back">Image/back.jpg</ImageSource>
+        <ImageSource x:Key="logo">Image/logo.jpg</ImageSource>
+    </Application.Resources>
+</Application>

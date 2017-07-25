@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a0ac6b10015545fab4448de2a9cc03cc" Name="Diagram1">
+        <EntityTypeShape EntityType="zmdbModel.cards" Width="1.5" PointX="8.25" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="zmdbModel.game" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="zmdbModel.gamepackage" Width="1.5" PointX="8.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="zmdbModel.packagecard" Width="1.5" PointX="10.5" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="zmdbModel.sets" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="zmdbModel.table" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="zmdbModel.userontable" Width="1.5" PointX="6" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="zmdbModel.userpackage" Width="1.5" PointX="13" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="zmdbModel.users" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
+        <AssociationConnector Association="zmdbModel.packagecard_ibfk_3" ManuallyRouted="false" />
+        <AssociationConnector Association="zmdbModel.Pset" ManuallyRouted="false" />
+        <AssociationConnector Association="zmdbModel.game_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="zmdbModel.game_ibfk_2" ManuallyRouted="false" />
+        <AssociationConnector Association="zmdbModel.gamepackage_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="zmdbModel.gamepackage_ibfk_2" ManuallyRouted="false" />
+        <AssociationConnector Association="zmdbModel.gamepackage_ibfk_3" ManuallyRouted="false" />
+        <AssociationConnector Association="zmdbModel.packagecard_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="zmdbModel.packagecard_ibfk_2" ManuallyRouted="false" />
+        <AssociationConnector Association="zmdbModel.userpackage_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="zmdbModel.userontable_ibfk_2" ManuallyRouted="false" />
+        <AssociationConnector Association="zmdbModel.userontable_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="zmdbModel.Puserid" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

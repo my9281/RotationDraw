@@ -1,0 +1,790 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="zmdbModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="cards">
+          <Key>
+            <PropertyRef Name="CardID" />
+          </Key>
+          <Property Name="CardID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="manacost" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="pt" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="set" Type="int" Nullable="false" />
+          <Property Name="text" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="type" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Level" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="SingoID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="game">
+          <Key>
+            <PropertyRef Name="gameid" />
+          </Key>
+          <Property Name="gameid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tableid" Type="int" Nullable="false" />
+          <Property Name="starttime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="adminid" Type="int" Nullable="false" />
+          <Property Name="referee" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="state" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="gamepackage">
+          <Key>
+            <PropertyRef Name="gamepackageid" />
+          </Key>
+          <Property Name="gamepackageid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="gamepackageset" Type="int" Nullable="false" />
+          <Property Name="gameid" Type="int" Nullable="false" />
+          <Property Name="startuserid" Type="int" Nullable="false" />
+          <Property Name="isNow" Type="bit" />
+          <Property Name="rank" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="packagecard">
+          <Key>
+            <PropertyRef Name="packagecardid" />
+          </Key>
+          <Property Name="packagecardid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="gamepackageid" Type="int" Nullable="false" />
+          <Property Name="cardid" Type="int" Nullable="false" />
+          <Property Name="pickituserid" Type="int" />
+        </EntityType>
+        <EntityType Name="sets">
+          <Key>
+            <PropertyRef Name="SetID" />
+          </Key>
+          <Property Name="SetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="longname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="settype" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="table">
+          <Key>
+            <PropertyRef Name="tableid" />
+          </Key>
+          <Property Name="tableid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tablename" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="IsLock" Type="bool" Nullable="false" />
+          <Property Name="lockuserid" Type="int" />
+        </EntityType>
+        <EntityType Name="userontable">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userid" Type="int" Nullable="false" />
+          <Property Name="tableid" Type="int" Nullable="false" />
+          <Property Name="rank" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="userpackage">
+          <Key>
+            <PropertyRef Name="userpackageid" />
+          </Key>
+          <Property Name="userpackageid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userid" Type="int" Nullable="false" />
+          <Property Name="packagecardid" Type="bigint" Nullable="false" />
+          <Property Name="rank" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="userid" />
+          </Key>
+          <Property Name="userid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="userloginname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="registtime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="game_ibfk_1">
+          <End Role="table" Type="Self.table" Multiplicity="1" />
+          <End Role="game" Type="Self.game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="table">
+              <PropertyRef Name="tableid" />
+            </Principal>
+            <Dependent Role="game">
+              <PropertyRef Name="tableid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="game_ibfk_2">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="game" Type="Self.game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="game">
+              <PropertyRef Name="adminid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="gamepackage_ibfk_1">
+          <End Role="game" Type="Self.game" Multiplicity="1" />
+          <End Role="gamepackage" Type="Self.gamepackage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="game">
+              <PropertyRef Name="gameid" />
+            </Principal>
+            <Dependent Role="gamepackage">
+              <PropertyRef Name="gameid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="gamepackage_ibfk_2">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="gamepackage" Type="Self.gamepackage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="gamepackage">
+              <PropertyRef Name="startuserid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="gamepackage_ibfk_3">
+          <End Role="sets" Type="Self.sets" Multiplicity="1" />
+          <End Role="gamepackage" Type="Self.gamepackage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sets">
+              <PropertyRef Name="SetID" />
+            </Principal>
+            <Dependent Role="gamepackage">
+              <PropertyRef Name="gamepackageset" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="packagecard_ibfk_1">
+          <End Role="gamepackage" Type="Self.gamepackage" Multiplicity="1" />
+          <End Role="packagecard" Type="Self.packagecard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="gamepackage">
+              <PropertyRef Name="gamepackageid" />
+            </Principal>
+            <Dependent Role="packagecard">
+              <PropertyRef Name="gamepackageid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="packagecard_ibfk_2">
+          <End Role="cards" Type="Self.cards" Multiplicity="1" />
+          <End Role="packagecard" Type="Self.packagecard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cards">
+              <PropertyRef Name="CardID" />
+            </Principal>
+            <Dependent Role="packagecard">
+              <PropertyRef Name="cardid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="packagecard_ibfk_3">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="packagecard" Type="Self.packagecard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="packagecard">
+              <PropertyRef Name="pickituserid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Pset">
+          <End Role="sets" Type="Self.sets" Multiplicity="1" />
+          <End Role="cards" Type="Self.cards" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sets">
+              <PropertyRef Name="SetID" />
+            </Principal>
+            <Dependent Role="cards">
+              <PropertyRef Name="set" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Puserid">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="userpackage" Type="Self.userpackage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="userpackage">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="userontable_ibfk_1">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="userontable" Type="Self.userontable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="userontable">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="userontable_ibfk_2">
+          <End Role="table" Type="Self.table" Multiplicity="1" />
+          <End Role="userontable" Type="Self.userontable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="table">
+              <PropertyRef Name="tableid" />
+            </Principal>
+            <Dependent Role="userontable">
+              <PropertyRef Name="tableid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="userpackage_ibfk_1">
+          <End Role="packagecard" Type="Self.packagecard" Multiplicity="1" />
+          <End Role="userpackage" Type="Self.userpackage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="packagecard">
+              <PropertyRef Name="packagecardid" />
+            </Principal>
+            <Dependent Role="userpackage">
+              <PropertyRef Name="packagecardid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="zmdbModelStoreContainer">
+          <EntitySet Name="cards" EntityType="Self.cards" Schema="zmdb" store:Type="Tables" />
+          <EntitySet Name="game" EntityType="Self.game" Schema="zmdb" store:Type="Tables" />
+          <EntitySet Name="gamepackage" EntityType="Self.gamepackage" Schema="zmdb" store:Type="Tables" />
+          <EntitySet Name="packagecard" EntityType="Self.packagecard" Schema="zmdb" store:Type="Tables" />
+          <EntitySet Name="sets" EntityType="Self.sets" Schema="zmdb" store:Type="Tables" />
+          <EntitySet Name="table" EntityType="Self.table" Schema="zmdb" store:Type="Tables" />
+          <EntitySet Name="userontable" EntityType="Self.userontable" Schema="zmdb" store:Type="Tables" />
+          <EntitySet Name="userpackage" EntityType="Self.userpackage" Schema="zmdb" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="zmdb" store:Type="Tables" />
+          <AssociationSet Name="game_ibfk_1" Association="Self.game_ibfk_1">
+            <End Role="table" EntitySet="table" />
+            <End Role="game" EntitySet="game" />
+          </AssociationSet>
+          <AssociationSet Name="game_ibfk_2" Association="Self.game_ibfk_2">
+            <End Role="users" EntitySet="users" />
+            <End Role="game" EntitySet="game" />
+          </AssociationSet>
+          <AssociationSet Name="gamepackage_ibfk_1" Association="Self.gamepackage_ibfk_1">
+            <End Role="game" EntitySet="game" />
+            <End Role="gamepackage" EntitySet="gamepackage" />
+          </AssociationSet>
+          <AssociationSet Name="gamepackage_ibfk_2" Association="Self.gamepackage_ibfk_2">
+            <End Role="users" EntitySet="users" />
+            <End Role="gamepackage" EntitySet="gamepackage" />
+          </AssociationSet>
+          <AssociationSet Name="gamepackage_ibfk_3" Association="Self.gamepackage_ibfk_3">
+            <End Role="sets" EntitySet="sets" />
+            <End Role="gamepackage" EntitySet="gamepackage" />
+          </AssociationSet>
+          <AssociationSet Name="packagecard_ibfk_1" Association="Self.packagecard_ibfk_1">
+            <End Role="gamepackage" EntitySet="gamepackage" />
+            <End Role="packagecard" EntitySet="packagecard" />
+          </AssociationSet>
+          <AssociationSet Name="packagecard_ibfk_2" Association="Self.packagecard_ibfk_2">
+            <End Role="cards" EntitySet="cards" />
+            <End Role="packagecard" EntitySet="packagecard" />
+          </AssociationSet>
+          <AssociationSet Name="packagecard_ibfk_3" Association="Self.packagecard_ibfk_3">
+            <End Role="users" EntitySet="users" />
+            <End Role="packagecard" EntitySet="packagecard" />
+          </AssociationSet>
+          <AssociationSet Name="Pset" Association="Self.Pset">
+            <End Role="sets" EntitySet="sets" />
+            <End Role="cards" EntitySet="cards" />
+          </AssociationSet>
+          <AssociationSet Name="Puserid" Association="Self.Puserid">
+            <End Role="users" EntitySet="users" />
+            <End Role="userpackage" EntitySet="userpackage" />
+          </AssociationSet>
+          <AssociationSet Name="userontable_ibfk_1" Association="Self.userontable_ibfk_1">
+            <End Role="users" EntitySet="users" />
+            <End Role="userontable" EntitySet="userontable" />
+          </AssociationSet>
+          <AssociationSet Name="userontable_ibfk_2" Association="Self.userontable_ibfk_2">
+            <End Role="table" EntitySet="table" />
+            <End Role="userontable" EntitySet="userontable" />
+          </AssociationSet>
+          <AssociationSet Name="userpackage_ibfk_1" Association="Self.userpackage_ibfk_1">
+            <End Role="packagecard" EntitySet="packagecard" />
+            <End Role="userpackage" EntitySet="userpackage" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="zmdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="cards">
+          <Key>
+            <PropertyRef Name="CardID" />
+          </Key>
+          <Property Name="CardID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="manacost" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pt" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="set" Type="Int32" Nullable="false" />
+          <Property Name="text" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Level" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SingoID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="packagecard" Relationship="Self.packagecard_ibfk_3" FromRole="cards" ToRole="packagecard" />
+          <NavigationProperty Name="sets" Relationship="Self.Pset" FromRole="cards" ToRole="sets" />
+        </EntityType>
+        <EntityType Name="game">
+          <Key>
+            <PropertyRef Name="gameid" />
+          </Key>
+          <Property Name="gameid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tableid" Type="Int32" Nullable="false" />
+          <Property Name="starttime" Type="DateTime" Nullable="false" />
+          <Property Name="adminid" Type="Int32" Nullable="false" />
+          <Property Name="referee" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="state" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="table" Relationship="Self.game_ibfk_1" FromRole="game" ToRole="table" />
+          <NavigationProperty Name="users" Relationship="Self.game_ibfk_2" FromRole="game" ToRole="users" />
+          <NavigationProperty Name="gamepackage" Relationship="Self.gamepackage_ibfk_1" FromRole="game" ToRole="gamepackage" />
+        </EntityType>
+        <EntityType Name="gamepackage">
+          <Key>
+            <PropertyRef Name="gamepackageid" />
+          </Key>
+          <Property Name="gamepackageid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="gamepackageset" Type="Int32" Nullable="false" />
+          <Property Name="gameid" Type="Int32" Nullable="false" />
+          <Property Name="startuserid" Type="Int32" Nullable="false" />
+          <Property Name="rank" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="game" Relationship="Self.gamepackage_ibfk_1" FromRole="gamepackage" ToRole="game" />
+          <NavigationProperty Name="users" Relationship="Self.gamepackage_ibfk_2" FromRole="gamepackage" ToRole="users" />
+          <NavigationProperty Name="sets" Relationship="Self.gamepackage_ibfk_3" FromRole="gamepackage" ToRole="sets" />
+          <NavigationProperty Name="packagecard" Relationship="Self.packagecard_ibfk_1" FromRole="gamepackage" ToRole="packagecard" />
+          <Property Name="isNow" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="packagecard">
+          <Key>
+            <PropertyRef Name="packagecardid" />
+          </Key>
+          <Property Name="packagecardid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="gamepackageid" Type="Int32" Nullable="false" />
+          <Property Name="cardid" Type="Int32" Nullable="false" />
+          <Property Name="pickituserid" Type="Int32" />
+          <NavigationProperty Name="cards" Relationship="Self.packagecard_ibfk_3" FromRole="packagecard" ToRole="cards" />
+          <NavigationProperty Name="gamepackage" Relationship="Self.packagecard_ibfk_1" FromRole="packagecard" ToRole="gamepackage" />
+          <NavigationProperty Name="users" Relationship="Self.packagecard_ibfk_2" FromRole="packagecard" ToRole="users" />
+          <NavigationProperty Name="userpackage" Relationship="Self.userpackage_ibfk_1" FromRole="packagecard" ToRole="userpackage" />
+        </EntityType>
+        <EntityType Name="sets">
+          <Key>
+            <PropertyRef Name="SetID" />
+          </Key>
+          <Property Name="SetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="longname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="settype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="cards" Relationship="Self.Pset" FromRole="sets" ToRole="cards" />
+          <NavigationProperty Name="gamepackage" Relationship="Self.gamepackage_ibfk_3" FromRole="sets" ToRole="gamepackage" />
+        </EntityType>
+        <EntityType Name="table">
+          <Key>
+            <PropertyRef Name="tableid" />
+          </Key>
+          <Property Name="tableid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tablename" Type="String" Nullable="false" />
+          <Property Name="IsLock" Type="Boolean" Nullable="false" />
+          <Property Name="lockuserid" Type="Int32" />
+          <NavigationProperty Name="game" Relationship="Self.game_ibfk_1" FromRole="table" ToRole="game" />
+          <NavigationProperty Name="userontable" Relationship="Self.userontable_ibfk_2" FromRole="table" ToRole="userontable" />
+        </EntityType>
+        <EntityType Name="userontable">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userid" Type="Int32" Nullable="false" />
+          <Property Name="tableid" Type="Int32" Nullable="false" />
+          <Property Name="rank" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="table" Relationship="Self.userontable_ibfk_2" FromRole="userontable" ToRole="table" />
+          <NavigationProperty Name="users" Relationship="Self.userontable_ibfk_1" FromRole="userontable" ToRole="users" />
+        </EntityType>
+        <EntityType Name="userpackage">
+          <Key>
+            <PropertyRef Name="userpackageid" />
+          </Key>
+          <Property Name="userpackageid" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userid" Type="Int32" Nullable="false" />
+          <Property Name="packagecardid" Type="Int64" Nullable="false" />
+          <Property Name="rank" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="packagecard" Relationship="Self.userpackage_ibfk_1" FromRole="userpackage" ToRole="packagecard" />
+          <NavigationProperty Name="users" Relationship="Self.Puserid" FromRole="userpackage" ToRole="users" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="userid" />
+          </Key>
+          <Property Name="userid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="userloginname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="registtime" Type="DateTime" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="game" Relationship="Self.game_ibfk_2" FromRole="users" ToRole="game" />
+          <NavigationProperty Name="gamepackage" Relationship="Self.gamepackage_ibfk_2" FromRole="users" ToRole="gamepackage" />
+          <NavigationProperty Name="packagecard" Relationship="Self.packagecard_ibfk_2" FromRole="users" ToRole="packagecard" />
+          <NavigationProperty Name="userontable" Relationship="Self.userontable_ibfk_1" FromRole="users" ToRole="userontable" />
+          <NavigationProperty Name="userpackage" Relationship="Self.Puserid" FromRole="users" ToRole="userpackage" />
+        </EntityType>
+        <Association Name="packagecard_ibfk_3">
+          <End Role="cards" Type="Self.cards" Multiplicity="1" />
+          <End Role="packagecard" Type="Self.packagecard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cards">
+              <PropertyRef Name="CardID" />
+            </Principal>
+            <Dependent Role="packagecard">
+              <PropertyRef Name="cardid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Pset">
+          <End Role="sets" Type="Self.sets" Multiplicity="1" />
+          <End Role="cards" Type="Self.cards" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sets">
+              <PropertyRef Name="SetID" />
+            </Principal>
+            <Dependent Role="cards">
+              <PropertyRef Name="set" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="game_ibfk_1">
+          <End Role="table" Type="Self.table" Multiplicity="1" />
+          <End Role="game" Type="Self.game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="table">
+              <PropertyRef Name="tableid" />
+            </Principal>
+            <Dependent Role="game">
+              <PropertyRef Name="tableid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="game_ibfk_2">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="game" Type="Self.game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="game">
+              <PropertyRef Name="adminid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="gamepackage_ibfk_1">
+          <End Role="game" Type="Self.game" Multiplicity="1" />
+          <End Role="gamepackage" Type="Self.gamepackage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="game">
+              <PropertyRef Name="gameid" />
+            </Principal>
+            <Dependent Role="gamepackage">
+              <PropertyRef Name="gameid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="gamepackage_ibfk_2">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="gamepackage" Type="Self.gamepackage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="gamepackage">
+              <PropertyRef Name="startuserid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="gamepackage_ibfk_3">
+          <End Role="sets" Type="Self.sets" Multiplicity="1" />
+          <End Role="gamepackage" Type="Self.gamepackage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sets">
+              <PropertyRef Name="SetID" />
+            </Principal>
+            <Dependent Role="gamepackage">
+              <PropertyRef Name="gamepackageset" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="packagecard_ibfk_1">
+          <End Role="gamepackage" Type="Self.gamepackage" Multiplicity="1" />
+          <End Role="packagecard" Type="Self.packagecard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="gamepackage">
+              <PropertyRef Name="gamepackageid" />
+            </Principal>
+            <Dependent Role="packagecard">
+              <PropertyRef Name="gamepackageid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="packagecard_ibfk_2">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="packagecard" Type="Self.packagecard" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="packagecard">
+              <PropertyRef Name="pickituserid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="userpackage_ibfk_1">
+          <End Role="packagecard" Type="Self.packagecard" Multiplicity="1" />
+          <End Role="userpackage" Type="Self.userpackage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="packagecard">
+              <PropertyRef Name="packagecardid" />
+            </Principal>
+            <Dependent Role="userpackage">
+              <PropertyRef Name="packagecardid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="userontable_ibfk_2">
+          <End Role="table" Type="Self.table" Multiplicity="1" />
+          <End Role="userontable" Type="Self.userontable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="table">
+              <PropertyRef Name="tableid" />
+            </Principal>
+            <Dependent Role="userontable">
+              <PropertyRef Name="tableid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="userontable_ibfk_1">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="userontable" Type="Self.userontable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="userontable">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Puserid">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="userpackage" Type="Self.userpackage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="userpackage">
+              <PropertyRef Name="userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="zmdbEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="cards" EntityType="Self.cards" />
+          <EntitySet Name="game" EntityType="Self.game" />
+          <EntitySet Name="gamepackage" EntityType="Self.gamepackage" />
+          <EntitySet Name="packagecard" EntityType="Self.packagecard" />
+          <EntitySet Name="sets" EntityType="Self.sets" />
+          <EntitySet Name="table" EntityType="Self.table" />
+          <EntitySet Name="userontable" EntityType="Self.userontable" />
+          <EntitySet Name="userpackage" EntityType="Self.userpackage" />
+          <EntitySet Name="users" EntityType="Self.users" />
+          <AssociationSet Name="packagecard_ibfk_3" Association="Self.packagecard_ibfk_3">
+            <End Role="cards" EntitySet="cards" />
+            <End Role="packagecard" EntitySet="packagecard" />
+          </AssociationSet>
+          <AssociationSet Name="Pset" Association="Self.Pset">
+            <End Role="sets" EntitySet="sets" />
+            <End Role="cards" EntitySet="cards" />
+          </AssociationSet>
+          <AssociationSet Name="game_ibfk_1" Association="Self.game_ibfk_1">
+            <End Role="table" EntitySet="table" />
+            <End Role="game" EntitySet="game" />
+          </AssociationSet>
+          <AssociationSet Name="game_ibfk_2" Association="Self.game_ibfk_2">
+            <End Role="users" EntitySet="users" />
+            <End Role="game" EntitySet="game" />
+          </AssociationSet>
+          <AssociationSet Name="gamepackage_ibfk_1" Association="Self.gamepackage_ibfk_1">
+            <End Role="game" EntitySet="game" />
+            <End Role="gamepackage" EntitySet="gamepackage" />
+          </AssociationSet>
+          <AssociationSet Name="gamepackage_ibfk_2" Association="Self.gamepackage_ibfk_2">
+            <End Role="users" EntitySet="users" />
+            <End Role="gamepackage" EntitySet="gamepackage" />
+          </AssociationSet>
+          <AssociationSet Name="gamepackage_ibfk_3" Association="Self.gamepackage_ibfk_3">
+            <End Role="sets" EntitySet="sets" />
+            <End Role="gamepackage" EntitySet="gamepackage" />
+          </AssociationSet>
+          <AssociationSet Name="packagecard_ibfk_1" Association="Self.packagecard_ibfk_1">
+            <End Role="gamepackage" EntitySet="gamepackage" />
+            <End Role="packagecard" EntitySet="packagecard" />
+          </AssociationSet>
+          <AssociationSet Name="packagecard_ibfk_2" Association="Self.packagecard_ibfk_2">
+            <End Role="users" EntitySet="users" />
+            <End Role="packagecard" EntitySet="packagecard" />
+          </AssociationSet>
+          <AssociationSet Name="userpackage_ibfk_1" Association="Self.userpackage_ibfk_1">
+            <End Role="packagecard" EntitySet="packagecard" />
+            <End Role="userpackage" EntitySet="userpackage" />
+          </AssociationSet>
+          <AssociationSet Name="userontable_ibfk_2" Association="Self.userontable_ibfk_2">
+            <End Role="table" EntitySet="table" />
+            <End Role="userontable" EntitySet="userontable" />
+          </AssociationSet>
+          <AssociationSet Name="userontable_ibfk_1" Association="Self.userontable_ibfk_1">
+            <End Role="users" EntitySet="users" />
+            <End Role="userontable" EntitySet="userontable" />
+          </AssociationSet>
+          <AssociationSet Name="Puserid" Association="Self.Puserid">
+            <End Role="users" EntitySet="users" />
+            <End Role="userpackage" EntitySet="userpackage" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="zmdbModelStoreContainer" CdmEntityContainer="zmdbEntities1">
+          <EntitySetMapping Name="cards">
+            <EntityTypeMapping TypeName="zmdbModel.cards">
+              <MappingFragment StoreEntitySet="cards">
+                <ScalarProperty Name="CardID" ColumnName="CardID" />
+                <ScalarProperty Name="manacost" ColumnName="manacost" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="pt" ColumnName="pt" />
+                <ScalarProperty Name="set" ColumnName="set" />
+                <ScalarProperty Name="text" ColumnName="text" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="SingoID" ColumnName="SingoID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="game">
+            <EntityTypeMapping TypeName="zmdbModel.game">
+              <MappingFragment StoreEntitySet="game">
+                <ScalarProperty Name="gameid" ColumnName="gameid" />
+                <ScalarProperty Name="tableid" ColumnName="tableid" />
+                <ScalarProperty Name="starttime" ColumnName="starttime" />
+                <ScalarProperty Name="adminid" ColumnName="adminid" />
+                <ScalarProperty Name="referee" ColumnName="referee" />
+                <ScalarProperty Name="state" ColumnName="state" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="gamepackage">
+            <EntityTypeMapping TypeName="zmdbModel.gamepackage">
+              <MappingFragment StoreEntitySet="gamepackage">
+                <ScalarProperty Name="isNow" ColumnName="isNow" />
+                <ScalarProperty Name="gamepackageid" ColumnName="gamepackageid" />
+                <ScalarProperty Name="gamepackageset" ColumnName="gamepackageset" />
+                <ScalarProperty Name="gameid" ColumnName="gameid" />
+                <ScalarProperty Name="startuserid" ColumnName="startuserid" />
+                <ScalarProperty Name="rank" ColumnName="rank" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="packagecard">
+            <EntityTypeMapping TypeName="zmdbModel.packagecard">
+              <MappingFragment StoreEntitySet="packagecard">
+                <ScalarProperty Name="packagecardid" ColumnName="packagecardid" />
+                <ScalarProperty Name="gamepackageid" ColumnName="gamepackageid" />
+                <ScalarProperty Name="cardid" ColumnName="cardid" />
+                <ScalarProperty Name="pickituserid" ColumnName="pickituserid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sets">
+            <EntityTypeMapping TypeName="zmdbModel.sets">
+              <MappingFragment StoreEntitySet="sets">
+                <ScalarProperty Name="SetID" ColumnName="SetID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="longname" ColumnName="longname" />
+                <ScalarProperty Name="settype" ColumnName="settype" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="table">
+            <EntityTypeMapping TypeName="zmdbModel.table">
+              <MappingFragment StoreEntitySet="table">
+                <ScalarProperty Name="tableid" ColumnName="tableid" />
+                <ScalarProperty Name="tablename" ColumnName="tablename" />
+                <ScalarProperty Name="IsLock" ColumnName="IsLock" />
+                <ScalarProperty Name="lockuserid" ColumnName="lockuserid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="userontable">
+            <EntityTypeMapping TypeName="zmdbModel.userontable">
+              <MappingFragment StoreEntitySet="userontable">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="tableid" ColumnName="tableid" />
+                <ScalarProperty Name="rank" ColumnName="rank" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="userpackage">
+            <EntityTypeMapping TypeName="zmdbModel.userpackage">
+              <MappingFragment StoreEntitySet="userpackage">
+                <ScalarProperty Name="userpackageid" ColumnName="userpackageid" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="packagecardid" ColumnName="packagecardid" />
+                <ScalarProperty Name="rank" ColumnName="rank" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="zmdbModel.users">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="userloginname" ColumnName="userloginname" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="registtime" ColumnName="registtime" />
+                <ScalarProperty Name="title" ColumnName="title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
