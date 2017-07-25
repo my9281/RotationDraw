@@ -120,9 +120,9 @@ namespace DBContent
                 foreach (var inneritem in temp)
                 {
                     inneritem.isNow = false;
-                    var k = inneritem.packagecard.ToList(); 
+                    var k = inneritem.packagecard.ToList();
                     var b2 = true;
-                    k.ForEach(e => b2 = b2 && e.pickituserid == null); 
+                    k.ForEach(e => b2 = b2 && e.pickituserid == null);
                     if (!b2)
                     {
                         inneritem.isNow = true;
@@ -132,12 +132,49 @@ namespace DBContent
             }
             db.SaveChanges();
         }
+        public int ChangeCard(int tableid, bool IsRight)
+        {
+            var db = new Entity.zmdbEntities1();
+            var game = db.game.Where(ex => ex.tableid == tableid).First();
+            var packagelist = game.gamepackage.ToList();
+            for (int i = 0; i < packagelist.Count; i++)
+            {
+                if (IsRight)
+                {
+                    var j = i + 1 >= packagelist.Count ? packagelist.Count : i + 1;
+                    var item = packagelist[i];
+                    var item2 = packagelist[j];
+                    var temp = item2.startuserid;
+                    item2.startuserid = item.startuserid;
+                    item.startuserid = temp;
+                }
+                else
+                {
+                    var j = i - 1 < 0 ? packagelist.Count - 1 : i - 1;
+                    var item = packagelist[i];
+                    var item2 = packagelist[j];
+                    var temp = item2.startuserid;
+                    item2.startuserid = item.startuserid;
+                    item.startuserid = temp;
+                }
+            }
+            db.SaveChanges();
+            return tableid;
+        }
         public List<Entity.packagecard> GetMyList(int userid)
         {
             var db = new Entity.zmdbEntities1();
             var package = db.gamepackage.First(e => e.startuserid == userid && e.isNow == true);
             var gamepackage = db.packagecard.Where(e => e.gamepackageid == package.gamepackageid && e.pickituserid == null).ToList();
             return gamepackage;
+        }
+        public List<Entity.cards> GetMyCardList(int gameid, int userid)
+        {
+            var db = new Entity.zmdbEntities1();
+            var li = db.packagecard.Where(ex => ex.gamepackage.gameid == gameid && userid == ex.pickituserid).ToList();
+            List<Entity.cards> s = new List<Entity.cards>();
+            li.ForEach(ex => s.Add(ex.cards));
+            return s;
         }
     }
 }
